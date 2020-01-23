@@ -1,147 +1,126 @@
 package com.introtoandroid.passwordmatcher;
 
+import androidx.test.espresso.ViewInteraction;
+import androidx.test.ext.junit.rules.ActivityScenarioRule;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import android.test.ActivityInstrumentationTestCase2;
-import android.test.TouchUtils;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
-public class PasswordMatcherTest extends
-        ActivityInstrumentationTestCase2<PasswordMatcherActivity> {
+import static androidx.test.espresso.Espresso.*;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.typeText;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.hasTextColor;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withHint;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
+
+@RunWith(AndroidJUnit4.class)
+public class PasswordMatcherTest {
     private static final String EMPTY_STRING = "";
-    private static final String GOOD_PASSWORD = "A B C 1 2 3 ENTER";
-    private static final String BAD_PASSWORD = "S B C 1 2 3 ENTER";
+    private static final String GOOD_PASSWORD = "ABC123";
+    private static final String BAD_PASSWORD = "SBC123";
 
-    TextView title;
-    EditText password;
-    EditText matchingPassword;
-    Button button;
-    TextView passwordResult;
-    PasswordMatcherActivity passwordMatcherActivity;
+    @Rule
+    public ActivityScenarioRule<PasswordMatcherActivity> activityScenarioRule
+            = new ActivityScenarioRule<>(PasswordMatcherActivity.class);
 
-    public PasswordMatcherTest() {
-        super(PasswordMatcherActivity.class);
-    }
 
-    protected void setUp() throws Exception {
-        super.setUp();
-        passwordMatcherActivity = getActivity();
-        title = (TextView) passwordMatcherActivity.findViewById(R.id.title);
-        password = (EditText) passwordMatcherActivity.findViewById(R.id.password);
-        matchingPassword = (EditText) passwordMatcherActivity.findViewById(R.id.matchingPassword);
-        button = (Button) passwordMatcherActivity.findViewById(R.id.matchButton);
-        passwordResult = (TextView) passwordMatcherActivity.findViewById(R.id.passwordResult);
-    }
-
+    @Test
     public void testPreConditions() {
-        String t = title.getText().toString();
-        assertEquals(passwordMatcherActivity.getResources().getString(R.string.match_passwords_title), t);
+        onView(withId(R.id.title)).check(matches(withText(R.string.match_passwords_title)));
 
-        String p = password.getText().toString();
-        String pHint = password.getHint().toString();
-        int pInput = password.getInputType();
-        assertEquals(EMPTY_STRING, p);
-        assertEquals(passwordMatcherActivity.getResources().getString(R.string.password), pHint);
-        assertEquals(129, pInput);
+        onView(withId(R.id.password)).check(matches(withHint(R.string.password)));
+        onView(withId(R.id.matchingPassword)).check(matches(withHint(R.string.matching_password)));
 
-        String mp = matchingPassword.getText().toString();
-        String mpHint = matchingPassword.getHint().toString();
-        int mpInput = matchingPassword.getInputType();
-        assertEquals(EMPTY_STRING, mp);
-        assertEquals(passwordMatcherActivity.getResources().getString(R.string.matching_password), mpHint);
-        assertEquals(129, mpInput);
+        onView(withId(R.id.matchButton)).check(matches(withText(R.string.match_password_button)));
 
-        String b = button.getText().toString();
-        assertEquals(passwordMatcherActivity.getResources().getString(R.string.match_password_button), b);
+        // TODO:
+        // int mpInput = matchingPassword.getInputType();
+        // assertEquals(129, mpInput);
+        // int visibility = passwordResult.getVisibility();
+        // assertEquals(View.GONE, visibility);
 
-        int visibility = passwordResult.getVisibility();
-        assertEquals(View.GONE, visibility);
     }
 
+    @Test
     public void testMatchingPasswords() {
-        TouchUtils.clickView(this, password);
-        sendKeys(GOOD_PASSWORD);
+        ViewInteraction pwView = onView(withId(R.id.password));
+        pwView.perform(click());
+        pwView.perform(typeText(GOOD_PASSWORD));
+        ViewInteraction pwmatchView = onView(withId(R.id.matchingPassword));
+        pwmatchView.perform(click());
+        pwmatchView.perform(typeText(GOOD_PASSWORD));
 
-        TouchUtils.clickView(this, matchingPassword);
-        sendKeys(GOOD_PASSWORD);
+        onView(withId(R.id.matchButton)).perform(click());
 
-        TouchUtils.clickView(this, button);
-
-        String p = password.getText().toString();
-        assertEquals("abc123", p);
-
-        String mp = matchingPassword.getText().toString();
-        assertEquals("abc123", mp);
-
-        assertEquals(p, mp);
-
-        int visibility = passwordResult.getVisibility();
-        assertEquals(View.VISIBLE, visibility);
-
-        String notice = passwordResult.getText().toString();
-        assertEquals(passwordMatcherActivity.getResources().getString(R.string.passwords_match_notice), notice);
-
-        int noticeColor = passwordResult.getCurrentTextColor();
-        assertEquals(passwordMatcherActivity.getResources().getColor(R.color.green), noticeColor);
+        pwmatchView.check(matches(withText(GOOD_PASSWORD)));
+        onView(withId(R.id.passwordResult)).check(matches(isDisplayed()));
+        onView(withId(R.id.passwordResult)).check(matches(withText(R.string.passwords_match_notice)));
+        onView(withId(R.id.passwordResult)).check(matches(hasTextColor(R.color.red)));
     }
 
+    @Test
     public void testEmptyPasswords() {
-        TouchUtils.clickView(this, password);
-        sendKeys(EMPTY_STRING);
+        onView(withId(R.id.password)).perform(click());
+        onView(withId(R.id.password)).perform(typeText(EMPTY_STRING));
+        onView(withId(R.id.matchingPassword)).perform(click());
+        onView(withId(R.id.matchingPassword)).perform(typeText(EMPTY_STRING));
 
-        TouchUtils.clickView(this, matchingPassword);
-        sendKeys(EMPTY_STRING);
+        onView(withId(R.id.matchButton)).perform(click());
 
-        TouchUtils.clickView(this, button);
-
-        String p = password.getText().toString();
-        assertEquals(p, EMPTY_STRING);
-
-        String mp = matchingPassword.getText().toString();
-        assertEquals(mp, EMPTY_STRING);
-
-        assertEquals(p, mp);
-
-        int visibility = passwordResult.getVisibility();
-        assertEquals(View.VISIBLE, visibility);
-
-        String notice = passwordResult.getText().toString();
-        assertEquals(passwordMatcherActivity.getResources().getString(R.string.passwords_do_not_match_notice), notice);
-
-        int noticeColor = passwordResult.getCurrentTextColor();
-        assertEquals(passwordMatcherActivity.getResources().getColor(R.color.red), noticeColor);
+        onView(withId(R.id.password)).check(matches(withText(EMPTY_STRING)));
+        onView(withId(R.id.matchingPassword)).check(matches(withText(EMPTY_STRING)));
     }
 
-    public void testNotEqualPasswords() {
-        TouchUtils.clickView(this, password);
-        sendKeys(GOOD_PASSWORD);
+//
+//        String p = password.getText().toString();
+//        assertEquals(p, EMPTY_STRING);
+//
+//        String mp = matchingPassword.getText().toString();
+//        assertEquals(mp, EMPTY_STRING);
+//
+//        assertEquals(p, mp);
+//
+//        int visibility = passwordResult.getVisibility();
+//        assertEquals(View.VISIBLE, visibility);
+//
+//        String notice = passwordResult.getText().
+//        ();
+//        assertEquals(passwordMatcherActivity.getResources().getString(R.string.passwords_do_not_match_notice), notice);
+//
+//        int noticeColor = passwordResult.getCurrentTextColor();
+//        assertEquals(passwordMatcherActivity.getResources().getColor(R.color.red), noticeColor);
+//    }
+//
+//    public void testNotEqualPasswords() {
+//        TouchUtils.clickView(this, password);
+//        sendKeys(GOOD_PASSWORD);
+//
+//        TouchUtils.clickView(this, matchingPassword);
+//        sendKeys(BAD_PASSWORD);
+//
+//        TouchUtils.clickView(this, button);
+//
+//        String good = password.getText().toString();
+//        assertEquals("abc123", good);
+//
+//        String bad = matchingPassword.getText().toString();
+//        assertEquals("sbc123", bad);
+//
+//        assertTrue("Passwords should not match", (!good.equals(bad)));
+//
+//        int visibility = passwordResult.getVisibility();
+//        assertEquals(View.VISIBLE, visibility);
+//
+//        String notice = passwordResult.getText().toString();
+//        assertEquals(passwordMatcherActivity.getResources().getString(R.string.passwords_do_not_match_notice), notice);
+//
+//        int noticeColor = passwordResult.getCurrentTextColor();
+//        assertEquals(passwordMatcherActivity.getResources().getColor(R.color.red), noticeColor);
+//    }
 
-        TouchUtils.clickView(this, matchingPassword);
-        sendKeys(BAD_PASSWORD);
-
-        TouchUtils.clickView(this, button);
-
-        String good = password.getText().toString();
-        assertEquals("abc123", good);
-
-        String bad = matchingPassword.getText().toString();
-        assertEquals("sbc123", bad);
-
-        assertTrue("Passwords should not match", (!good.equals(bad)));
-
-        int visibility = passwordResult.getVisibility();
-        assertEquals(View.VISIBLE, visibility);
-
-        String notice = passwordResult.getText().toString();
-        assertEquals(passwordMatcherActivity.getResources().getString(R.string.passwords_do_not_match_notice), notice);
-
-        int noticeColor = passwordResult.getCurrentTextColor();
-        assertEquals(passwordMatcherActivity.getResources().getColor(R.color.red), noticeColor);
-    }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
 }
