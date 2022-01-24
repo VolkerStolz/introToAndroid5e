@@ -25,8 +25,10 @@ public class TextInputActivity extends AppCompatActivity {
         assert getSupportActionBar() != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        // Older Android:
         final EditText text1 = (EditText) findViewById(R.id.EditText01);
-        final EditText text2 = (EditText) findViewById(R.id.EditText02);
+        // Since API 26(?) - no cast necessary!
+        final EditText text2 = findViewById(R.id.EditText02);
         final Spinner spin = (Spinner) findViewById(R.id.Spinner01);
         final Button submit = (Button) findViewById(R.id.submit);
 
