@@ -3,7 +3,10 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/SimpleFragments.iml" filepath="$PROJECT_DIR$/SimpleFragments.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/SimpleFragments.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/SimpleFragments.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/SimpleFragments.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/SimpleFragments.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/SimpleFragments.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/SimpleFragments.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/SimpleFragments.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/SimpleFragments.app.unitTest.iml" />
     </modules>
   </component>
 </project>
