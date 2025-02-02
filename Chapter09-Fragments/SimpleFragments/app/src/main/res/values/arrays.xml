@@ -13,15 +13,15 @@
         <item>Zucchini</item>
     </string-array>
     <string-array name="veggieurls_array">
-        <item>http://andys-veggie-garden.appspot.com/cherrytomatoes</item>
-        <item>http://andys-veggie-garden.appspot.com/figs</item>
-        <item>http://andys-veggie-garden.appspot.com/grapes</item>
-        <item>http://andys-veggie-garden.appspot.com/heirloomtomatoes</item>
-        <item>http://andys-veggie-garden.appspot.com/lemon</item>
-        <item>http://andys-veggie-garden.appspot.com/lime</item>
-        <item>http://andys-veggie-garden.appspot.com/oranges</item>
-        <item>http://andys-veggie-garden.appspot.com/peach</item>
-        <item>http://andys-veggie-garden.appspot.com/peppers</item>
-        <item>http://andys-veggie-garden.appspot.com/zucchini</item>
+        <item>https://foldr.org/~vs/volkers-veggie-garden/cherrytomatoes.html</item>
+        <item>https://foldr.org/~vs/volkers-veggie-garden/figs.html</item>
+        <item>https://foldr.org/~vs/volkers-veggie-garden/grapes.html</item>
+        <item>https://foldr.org/~vs/volkers-veggie-garden/heirloomtomatoes.html</item>
+        <item>https://foldr.org/~vs/volkers-veggie-garden/lemon.html</item>
+        <item>https://foldr.org/~vs/volkers-veggie-garden/lime.html</item>
+        <item>https://foldr.org/~vs/volkers-veggie-garden/oranges.html</item>
+        <item>https://foldr.org/~vs/volkers-veggie-garden/peach.html</item>
+        <item>https://foldr.org/~vs/volkers-veggie-garden/peppers.html</item>
+        <item>https://foldr.org/~vs/volkers-veggie-garden/zucchini.html</item>
     </string-array>
 </resources>

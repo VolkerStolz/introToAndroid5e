@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.webkit.WebViewFragment;
 
 
@@ -50,12 +51,13 @@ public class VeggieGardenWebViewFragment extends WebViewFragment {
         webview.setPadding(0, 0, 0, 0);
         webview.getSettings().setLoadWithOverviewMode(true);
         webview.getSettings().setUseWideViewPort(true);
+        webview.setWebViewClient(new WebViewClient());
 
         if (veggieUrlIndex != -1) {
             String veggieUrl = veggieUrls[veggieUrlIndex];
             webview.loadUrl(veggieUrl);
         } else {
-            webview.loadUrl("http://andys-veggie-garden.appspot.com/cherrytomatoes");
+            webview.loadUrl("https://foldr.org/~vs/volkers-veggie-garden/cherrytomatoes.html");
         }
     }
 
