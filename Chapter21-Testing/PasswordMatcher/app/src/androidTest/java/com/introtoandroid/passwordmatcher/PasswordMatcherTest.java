@@ -2,59 +2,56 @@ package com.introtoandroid.passwordmatcher;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static androidx.test.espresso.matcher.ViewMatchers.withHint;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withInputType;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static org.junit.Assert.assertEquals;
 
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.espresso.action.ViewActions;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.filters.LargeTest;
 
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4.class)
+@LargeTest
 public class PasswordMatcherTest {
     private static final String EMPTY_STRING = "";
     private static final String GOOD_PASSWORD = "A B C 1 2 3 ENTER";
     private static final String BAD_PASSWORD = "S B C 1 2 3 ENTER";
 
-    ActivityScenarioRule<PasswordMatcherActivity> activityRule = new ActivityScenarioRule<>(PasswordMatcherActivity.class);
+    @Rule
+    public ActivityScenarioRule<PasswordMatcherActivity> activityRule = new ActivityScenarioRule<>(PasswordMatcherActivity.class);
     private ActivityScenario<PasswordMatcherActivity> activityScenario;
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         activityScenario = activityRule.getScenario();
     }
 
+    @Test
     public void testPreConditions() {
-        activityScenario.onActivity(a -> {
             onView(withId(R.id.title)).check(matches(withText(R.string.match_passwords_title)));
             onView(withId(R.id.password)).check(matches(withText(EMPTY_STRING)));
             onView(withId(R.id.password)).perform(ViewActions.typeText("password"));
             onView(withId(R.id.password)).check(matches(withHint(R.string.password)));
             onView(withId(R.id.password)).check(matches(withInputType(129)));
 
-//        String mp = matchingPassword.getText().toString();
-//        String mpHint = matchingPassword.getHint().toString();
-//        int mpInput = matchingPassword.getInputType();
-//        assertEquals(EMPTY_STRING, mp);
-//        assertEquals(passwordMatcherActivity.getResources().getString(R.string.matching_password), mpHint);
-//        assertEquals(129, mpInput);
-//
-//        String b = button.getText().toString();
-//        assertEquals(passwordMatcherActivity.getResources().getString(R.string.match_password_button), b);
-//
-//        int visibility = passwordResult.getVisibility();
-//        assertEquals(View.GONE, visibility);
-        });
+            onView(withId(R.id.matchingPassword)).check(matches(withText(EMPTY_STRING)));
+            onView(withId(R.id.matchingPassword)).check(matches(withHint(R.string.matching_password)));
+            onView(withId(R.id.matchingPassword)).check(matches(withInputType(129)));
+
+            onView(withId(R.id.matchButton)).check(matches(withText(R.string.match_password_button)));
+            onView(withId(R.id.passwordResult)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.forViewVisibility(View.GONE))));
     }
 
 //    public void testMatchingPasswords() {
