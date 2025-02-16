@@ -7,6 +7,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibilit
 import static androidx.test.espresso.matcher.ViewMatchers.withHint;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withInputType;
+import static androidx.test.espresso.matcher.ViewMatchers.withTagKey;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
 import static org.junit.Assert.assertEquals;
@@ -112,5 +113,10 @@ public class PasswordMatcherTest {
         onView(withId(R.id.passwordResult)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.forViewVisibility(View.VISIBLE))));
         onView(withId(R.id.passwordResult)).check(matches(withText(R.string.passwords_do_not_match_notice)));
         onView(withId(R.id.passwordResult)).check(matches(hasTextColor(R.color.red)));
+    }
+
+    @Test
+    public void testTag() {
+        onView(withTagKey(R.id.MINE)).check(matches(withId(R.id.matchButton)));
     }
 }

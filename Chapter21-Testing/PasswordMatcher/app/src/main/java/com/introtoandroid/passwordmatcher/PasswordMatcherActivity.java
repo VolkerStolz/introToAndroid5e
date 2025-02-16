@@ -24,6 +24,9 @@ public class PasswordMatcherActivity extends Activity {
         passwordResult = (TextView) findViewById(R.id.passwordResult);
 
         Button button = (Button) findViewById(R.id.matchButton);
+        // See `res/values/tags.xml`:
+        button.setTag(R.id.MINE, new Object()); // can't be null!
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
