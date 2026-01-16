@@ -55,7 +55,7 @@ class TextInputActivity : AppCompatActivity() {
         )
 
         val text = findViewById<View?>(R.id.AutoCompleteTextView01) as AutoCompleteTextView
-        text.setAdapter<ArrayAdapter<String?>?>(adapter)
+        text.setAdapter(adapter)
 
         val mtext =
             findViewById<View?>(R.id.MultiAutoCompleteTextView01) as MultiAutoCompleteTextView

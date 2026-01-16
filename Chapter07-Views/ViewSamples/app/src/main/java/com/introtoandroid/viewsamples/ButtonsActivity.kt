@@ -23,12 +23,10 @@ class ButtonsActivity : AppCompatActivity() {
         checkNotNull(getSupportActionBar())
         getSupportActionBar()!!.setDisplayHomeAsUpEnabled(true)
 
-        val basic_button = findViewById<View?>(R.id.basic_button) as Button
-        basic_button.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                Toast.makeText(this@ButtonsActivity, "Button clicked", Toast.LENGTH_SHORT).show()
-            }
-        })
+        val basicButton: Button = findViewById(R.id.basic_button)
+        basicButton.setOnClickListener {
+            Toast.makeText(this, "Button clicked", Toast.LENGTH_SHORT).show()
+        }
 
         val image_button = findViewById<View?>(R.id.image_button) as ImageButton
         image_button.setOnClickListener(object : View.OnClickListener {
@@ -86,24 +84,23 @@ class ButtonsActivity : AppCompatActivity() {
             }
         })
 
-        val group = findViewById<View?>(R.id.RadioGroup01) as RadioGroup
-        group.setOnCheckedChangeListener(object : RadioGroup.OnCheckedChangeListener {
-            override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
-                val tv = findViewById<View?>(R.id.TextView01) as TextView
-                if (checkedId != -1) {
-                    val rb = findViewById<View?>(checkedId) as RadioButton?
-                    if (rb != null) {
-                        tv.setText("You chose: " + rb.getText())
-                        Toast.makeText(
-                            this@ButtonsActivity, rb.getText().toString() + " selected",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                } else {
-                    tv.setText("Choose 1")
-                }
+        val group = findViewById<RadioGroup>(R.id.RadioGroup01)
+
+        group.setOnCheckedChangeListener { _, checkedId ->
+            val tv = findViewById<TextView>(R.id.TextView01)
+            if (checkedId != -1) {
+                val rb = findViewById<RadioButton>(checkedId)
+                tv.text = "You chose: ${rb.text}"
+
+                Toast.makeText(
+                    this@ButtonsActivity,
+                    "${rb.text} selected",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                tv.text = "Choose 1"
             }
-        })
+        }
 
         val clear_choice = findViewById<View?>(R.id.Button01) as Button
         clear_choice.setOnClickListener(object : View.OnClickListener {
