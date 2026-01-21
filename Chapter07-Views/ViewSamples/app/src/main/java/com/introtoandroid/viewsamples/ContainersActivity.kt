@@ -14,17 +14,15 @@ class ContainersActivity : AppCompatActivity() {
 
         setContentView(R.layout.containers)
 
-        checkNotNull(getSupportActionBar())
-        getSupportActionBar()!!.setDisplayHomeAsUpEnabled(true)
+        checkNotNull(supportActionBar)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         val switch_button = findViewById<View?>(R.id.flip_button) as Button
         val switcher = findViewById<View?>(R.id.img_switch) as ImageSwitcher
 
-        switch_button.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                Toast.makeText(this@ContainersActivity, "Switching", Toast.LENGTH_SHORT).show()
-                switcher.showNext()
-            }
-        })
+        switch_button.setOnClickListener {
+            Toast.makeText(this@ContainersActivity, "Switching", Toast.LENGTH_SHORT).show()
+            switcher.showNext()
+        }
     }
 }
