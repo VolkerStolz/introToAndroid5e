@@ -3,6 +3,7 @@ package com.introtoandroid.passwordmatcher;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.hasTextColor;
+import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static androidx.test.espresso.matcher.ViewMatchers.withHint;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
@@ -13,8 +14,8 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
+import android.text.InputType;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.test.core.app.ActivityScenario;
@@ -41,32 +42,34 @@ public class PasswordMatcherTest {
     private ActivityScenario<PasswordMatcherActivity> activityScenario;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         activityScenario = activityRule.getScenario();
     }
 
     @Test
     public void testPreConditions() {
             onView(withId(R.id.title)).check(matches(withText(R.string.match_passwords_title)));
-            onView(withId(R.id.password)).check(matches(withText(EMPTY_STRING)));
-            onView(withId(R.id.password)).check(matches(withHint(R.string.password)));
-            onView(withId(R.id.password)).check(matches(withInputType(129)));
+            onView(withTagKey(R.id.password1)).check(matches(withText(EMPTY_STRING)));
+            onView(withTagKey(R.id.password1)).check(matches(withHint(R.string.password)));
+            onView(withId(R.id.password)).check(matches(
+                    withInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)));
 
             onView(withId(R.id.matchingPassword)).check(matches(withText(EMPTY_STRING)));
-            onView(withId(R.id.matchingPassword)).check(matches(withHint(R.string.matching_password)));
-            onView(withId(R.id.matchingPassword)).check(matches(withInputType(129)));
+            onView(withTagKey(R.id.password2)).check(matches(withHint(R.string.matching_password)));
+            onView(withTagKey(R.id.password2)).check(matches(
+                    withInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)));
 
-            onView(withId(R.id.matchButton)).check(matches(withText(R.string.match_password_button)));
             onView(withId(R.id.passwordResult)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.forViewVisibility(View.GONE))));
     }
 
     @Test
     public void testMatchingPasswords() {
-        onView(withId(R.id.password)).perform(ViewActions.typeText(GOOD_PASSWORD));
-        onView(withId(R.id.matchingPassword)).perform(ViewActions.typeText(GOOD_PASSWORD));
-        onView(withId(R.id.matchButton)).perform(ViewActions.click());
-        onView(withId(R.id.password)).check(matches(withText("abc123")));
-        onView(withId(R.id.matchingPassword)).check(matches(withText("abc123")));
+        // Example of tag-use, e.g. for dynamically created views:
+        onView(withTagKey(R.id.password1)).perform(ViewActions.typeText(GOOD_PASSWORD));
+        onView(withTagKey(R.id.password2)).perform(ViewActions.typeText(GOOD_PASSWORD));
+        onView(withText(R.string.match_password_button)).perform(ViewActions.click());
+        onView(withTagKey(R.id.password1)).check(matches(withText("abc123")));
+        onView(withTagKey(R.id.password2)).check(matches(withText("abc123")));
 
         activityScenario.onActivity(a -> {
             TextView pwView = a.findViewById(R.id.password);
@@ -74,9 +77,12 @@ public class PasswordMatcherTest {
             assertEquals(pwView.getText().toString(),matchView.getText().toString());
         });
 
-        onView(withId(R.id.passwordResult)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.forViewVisibility(View.VISIBLE))));
+        onView(withId(R.id.passwordResult)).check(matches(
+                withEffectiveVisibility(ViewMatchers.Visibility.forViewVisibility(View.VISIBLE))));
         onView(withId(R.id.passwordResult)).check(matches(withText(R.string.passwords_match_notice)));
-        onView(withId(R.id.passwordResult)).check(matches(hasTextColor(R.color.green)));
+        // Aaaaaand another variation:
+        onView(withContentDescription(R.string.match_password_notice)).check(
+                matches(hasTextColor(R.color.green)));
     }
 
     @Test
