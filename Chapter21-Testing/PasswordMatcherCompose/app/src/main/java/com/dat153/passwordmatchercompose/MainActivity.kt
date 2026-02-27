@@ -63,7 +63,7 @@ fun PasswordMatcherScreen() {
                 .testTag("password")
         )
 
-        Spacer(modifier = Modifier.testTag("title").height(16.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         Text("Confirm Password")
         OutlinedTextField(
