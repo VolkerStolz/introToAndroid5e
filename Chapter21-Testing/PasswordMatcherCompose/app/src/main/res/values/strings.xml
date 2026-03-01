@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">PasswordMatcherCompose</string>
+    <string name="no_notice">Not checked yet</string>
+    <string name="matching_password_notice">Passwords match</string>
+    <string name="non_matching_password_notice">Passwords do not match</string>
+
 </resources>

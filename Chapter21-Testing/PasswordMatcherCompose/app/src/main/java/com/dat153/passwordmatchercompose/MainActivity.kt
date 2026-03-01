@@ -37,8 +37,7 @@ fun PasswordMatcherScreen() {
     Column(
         modifier = Modifier
             .semantics {
-                // Set any explicit semantic properties
-                stateDescription = "where_does_this_come_up"
+                contentDescription = "Password Screen"
             }
             .fillMaxSize()
             .padding(24.dp),
@@ -86,7 +85,7 @@ fun PasswordMatcherScreen() {
                 } else {
                     resultMessage = "Passwords do not match."
                     resultColor = Color(0xFFF44336)
-                    resultSemantic = "no_match_password_notice"
+                    resultSemantic = "non_matching_password_notice"
                 }
             },
             modifier = Modifier.testTag("matchButton").fillMaxWidth()
@@ -102,7 +101,10 @@ fun PasswordMatcherScreen() {
                 color = resultColor,
                 style = MaterialTheme.typography.bodyLarge,
                 modifier = Modifier
-                            .semantics{ contentDescription = resultSemantic }
+                            .semantics{
+                                contentDescription = "result_message"
+                                stateDescription = resultSemantic
+                            }
                             .testTag("passwordResult")
             )
         }

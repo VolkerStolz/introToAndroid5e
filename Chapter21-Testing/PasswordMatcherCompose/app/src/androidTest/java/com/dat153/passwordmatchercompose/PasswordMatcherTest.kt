@@ -1,11 +1,11 @@
 package com.dat153.passwordmatchercompose
 
-import androidx.compose.ui.graphics.Color
+
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -13,6 +13,7 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 @LargeTest
 class PasswordMatcherTest {
+
 
     companion object {
         private const val EMPTY_STRING = ""
@@ -28,9 +29,8 @@ class PasswordMatcherTest {
     @Test
     fun testPreConditions() {
         // Title is shown
-        composeTestRule.onNodeWithTag("title")
+        composeTestRule.onNodeWithText("Match Passwords")
             .assertIsDisplayed()
-            .assertTextEquals("Match Passwords")
 
         // Password field is empty
         composeTestRule.onNodeWithTag("password")
@@ -64,13 +64,12 @@ class PasswordMatcherTest {
         composeTestRule.onNodeWithTag("matchingPassword")
             .assert(hasText(GOOD_PASSWORD, substring = false))
 
-        // Result is visible and shows the match message
         composeTestRule.onNodeWithTag("passwordResult")
             .assertIsDisplayed()
             .assertTextEquals("Passwords match!")
 
-        // Result uses green color (checked via content description set on the Text)
-        composeTestRule.onNodeWithContentDescription("match_password_notice")
+        composeTestRule.onNodeWithContentDescription("result_message")
+            .assert(hasStateDescription("match_password_notice"))
             .assertIsDisplayed()
     }
 
@@ -91,7 +90,8 @@ class PasswordMatcherTest {
             .assertIsDisplayed()
             .assertTextEquals("Passwords do not match.")
 
-        composeTestRule.onNodeWithContentDescription("no_match_password_notice")
+        composeTestRule.onNodeWithContentDescription("result_message")
+            .assert(hasStateDescription("non_matching_password_notice"))
             .assertIsDisplayed()
     }
 
@@ -110,7 +110,8 @@ class PasswordMatcherTest {
             .assertIsDisplayed()
             .assertTextEquals("Passwords do not match.")
 
-        composeTestRule.onNodeWithContentDescription("no_match_password_notice")
+        composeTestRule.onNodeWithContentDescription("result_message")
+            .assert(hasStateDescription("non_matching_password_notice"))
             .assertIsDisplayed()
     }
 }
@@ -121,11 +122,7 @@ class Test3 {
 
     @Test
     fun testLog() {
-        // [START android_compose_semantics_print_log]
         composeTestRule.onRoot(useUnmergedTree = true).printToLog("matchingPassword")
-        // [END android_compose_semantics_print_log]
-        // [START android_compose_semantics_match_text]
         composeTestRule.onRoot(useUnmergedTree = false).printToLog("matchingPassword")
-        // [END android_compose_semantics_match_text]
     }
 }
